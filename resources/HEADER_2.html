@@ -1,0 +1,163 @@
+<html>
+<head>
+  <title>NCBI BLAST Search</title>
+  <link type="text/css" rel="stylesheet" media="all" href="css/layout_blast.css">
+  <!--ONLINE REQUIREMENTS-->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet" type='text/css'>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script language="javascript">
+  <!-- HIDE
+  function chan(a)
+  {
+    if (a.value == 'off') {
+      document.bl2.gopen.value = 11;
+      document.bl2.gext.value = 1;
+      document.bl2.match.value = "";
+      document.bl2.msmatch.value = "";
+      a.value = 'on';
+    } else {
+      document.bl2.gopen.value = 5;
+      document.bl2.gext.value = 2;
+      document.bl2.match.value = "1";
+      document.bl2.msmatch.value = "-2";
+      a.value = 'off';
+    }
+  }
+  function chan_prog(a)
+  {
+    if (a.selectedIndex == 0) {
+      document.bl2.gopen.value = 5;
+      document.bl2.gext.value = 2;
+      document.bl2.match.value = 1;
+      document.bl2.msmatch.value = "-2";
+      document.bl2.word.value = "11";
+      document.bl2.matrix.options.length = 1;
+      document.bl2.matrix.options[0] = null;
+      document.bl2.matrix.options[0] = new Option('Not Applicable');
+      document.bl2.matrix.options[0].text = 'Not Applicable';
+      document.bl2.matrix.options[0].value = -1;
+      document.bl2.strand.options.length = 4;
+      document.bl2.strand.options[0] = null;
+      document.bl2.strand.options[0] = new Option('Both strands');
+      document.bl2.strand.options[0].text = 'Both strands';
+      document.bl2.strand.options[0].value = 3;
+      document.bl2.strand.options[0].selected = true;
+      document.bl2.strand.options[1].text = 'Top strand';
+      document.bl2.strand.options[1].value = 1;
+      document.bl2.strand.options[2].text = 'Reverse strand';
+      document.bl2.strand.options[2].value = 2;
+    } else if (a.selectedIndex >= 1) {
+      document.bl2.matrix.options.length = 6;
+      document.bl2.matrix.options[0] = null;
+      document.bl2.matrix.options[0] = new Option('BLOSUM62');
+      document.bl2.matrix.options[0].selected = true;
+      document.bl2.matrix.options[0].text = 'BLOSUM62';
+      document.bl2.matrix.options[0].value = 0;
+      document.bl2.matrix.options[1].text = 'PAM30';
+      document.bl2.matrix.options[1].value = 1;
+      document.bl2.matrix.options[2].text = 'PAM70';
+      document.bl2.matrix.options[2].value = 2;
+      document.bl2.matrix.options[3].text = 'BLOSUM45';
+      document.bl2.matrix.options[3].value = 3;
+      document.bl2.matrix.options[4].text = 'BLOSUM80';
+      document.bl2.matrix.options[4].value = 4;
+      document.bl2.word.value = "3";
+      if (document.bl2.matrix.selectedIndex == 1) {
+        document.bl2.gopen.value = 9;
+        document.bl2.gext.value = 1;
+      } else if (document.bl2.matrix.selectedIndex == 2) {
+        document.bl2.gopen.value = 10;
+        document.bl2.gext.value = 1;
+      } else if (document.bl2.matrix.selectedIndex == 3) {
+        document.bl2.gopen.value = 15;
+        document.bl2.gext.value = 2;
+      } else if (document.bl2.matrix.selectedIndex == 4) {
+        document.bl2.gopen.value = 10;
+        document.bl2.gext.value = 1;
+      } else {
+        document.bl2.gopen.value = 11;
+        document.bl2.gext.value = 1;
+      }
+      document.bl2.match.value = "";
+      document.bl2.msmatch.value = "";
+      document.bl2.megablast.checked = 0;
+      document.bl2.strand.options.length = 1;
+      document.bl2.strand.options[0] = null;
+      document.bl2.strand.options[0] = new Option('Not Applicable');
+      document.bl2.strand.options[0].selected = true;
+      document.bl2.strand.options[0].text = 'Not Applicable';
+      document.bl2.strand.options[0].value = 0;
+    }
+  }
+  function update_mtrx(a)
+  {
+    if (document.bl2.program.selectedIndex == 0) {
+      return;
+    }
+    document.bl2.word.value = 3;
+    if (a.selectedIndex == 0) {
+      document.bl2.gopen.value = 11;
+      document.bl2.gext.value = 1;
+    } else if (a.selectedIndex == 1) {
+      document.bl2.gopen.value = 9;
+      document.bl2.gext.value = 1;
+    } else if (a.selectedIndex == 2) {
+      document.bl2.gopen.value = 10;
+      document.bl2.gext.value = 1;
+    } else if (a.selectedIndex == 3) {
+      document.bl2.gopen.value = 14;
+      document.bl2.gext.value = 2;
+    } else if (a.selectedIndex == 4) {
+      document.bl2.gopen.value = 10;
+      document.bl2.gext.value = 1;
+    } else if (a.selectedIndex == 5) {
+      document.bl2.gopen.value = 13;
+      document.bl2.gext.value = 2;
+    }
+  }
+  function clear_sequence() {
+    document.bl2.seqfile1.value = ''
+    document.bl2.seqfile2.value = ''
+    document.bl2.sseq.value = ''
+    document.bl2.seq.value = ''
+    document.bl2.to.value = ''
+    document.bl2.tto.value = ''
+    document.bl2.from.value = ''
+    document.bl2.ffrom.value = ''
+    document.bl2.seq.focus()
+  }
+  function megablast_update(a)
+  {
+    if (a.checked == 0) {
+      document.bl2.word.value = 11;
+      document.bl2.gopen.value = 5;
+      document.bl2.gext.value = 2;
+    } else {
+      if (document.bl2.program.selectedIndex != 0) {
+        document.bl2.program.selectedIndex = 0;
+        chan_prog(document.bl2.program);
+      }
+      document.bl2.word.value = 28;
+      document.bl2.gopen.value = "";
+      document.bl2.gext.value = "";
+    }
+  }
+  // -->
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid" style=" max-width: 1024px; ">
+      <div class="navbar-header">
+        <a class="navbar-brand"  style="color: #126ed2;" href="#">NCBI Blast</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="docs/blast_help.html">Docs</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="main results">
+    <h2>NCBI BLAST Results</h2>

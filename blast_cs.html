@@ -1,0 +1,303 @@
+<html>
+<head>
+  <title>NCBI BLAST Search</title>
+  <link type="text/css" rel="stylesheet" media="all" href="css/layout_blast.css">
+  <!--ONLINE REQUIREMENTS-->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet" type='text/css'>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+  var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+    sURLVariables = sPageURL.split('&'),
+    sParameterName,
+    i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : sParameterName[1];
+      }
+    }
+  };
+
+  $("document").ready(function(){
+    //say you have got 555 from the JSP as selcted value
+    var program = getUrlParameter('program');
+    $("#program").val(program).attr("selected","selected")
+  });
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid" style=" max-width: 1024px; ">
+      <div class="navbar-header">
+        <a class="navbar-brand"  style="color: #126ed2;" href="#">NCBI Blast</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="docs/blast_help.html">Docs</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="main">
+    <h2>Standard Nucleotide BLAST</h2>
+    <form action="blast_cs.cgi" method="post" name="MainBlastForm" enctype="multipart/form-data">
+      <div class="well well-sm text-info">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> The Basic Local Alignment Search Tool (BLAST) finds regions of local similarity between protein or nucleotide sequences. The program compares nucleotide or protein sequences to sequence in a database and calculates the statistical significance of the matches.
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a>Run BLAST</a>
+          </h4>
+        </div>
+        <div class="">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>Program<a href="docs/blast_program.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="PROGRAM" id="program">
+                <option selected=""> blastn</option>
+                <option> blastp</option>
+                <option> blastx</option>
+                <option> tblastn</option>
+                <option> tblastx</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Database<a href="docs/blast_databases.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="DATALIB">
+                <option value="test_na_db">test_na_db</option>
+                <option value="test_aa_db">test_aa_db</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Input data is</label>
+              <select class="form-control" name="input_TYPE">
+                <option> Sequence in FASTA format</option>
+                <option> Accession or GI</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Enter FASTA sequence(s), accession number(s) or gi(s):</label>
+              <textarea class="form-control" rows="6" name="SEQUENCE"></textarea>
+            </div>
+            <p>Please read about <a href="/BLAST/fasta.html">FASTA</a> format description</p>
+            <div class="form-group">
+              <b>Set subsequence: </b>From
+              <input type="text" name="QUERY_FROM" value="" size="10"> to <input type="text" name="QUERY_TO" value="" size="10">
+            </div>
+          </div>
+          <div class="panel-footer">
+            <div>
+              <input class="btn btn-lg btn-success" type="submit" value="Search">
+              <input class="btn btn-lg btn-default" type="button" value="Clear sequence" onClick="MainBlastForm.SEQUENCE.value='';MainBlastForm.QUERY_FROM.value='';MainBlastForm.QUERY_TO.value='';MainBlastForm.SEQUENCE.focus();">
+              <span>Or load it from disk</span>
+              <input style=" display: inline-block; " type="file" name="SEQFILE">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#advanced"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Advanced settings</a>
+          </h4>
+        </div>
+        <div id="advanced" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="well well-sm text-info">
+              <i class="fa fa-info-circle" aria-hidden="true"></i> Use this section to customize the execution on BLAST.
+            </div>
+            <p>The query sequence is <a href="/BLAST/filtered.html">filtered</a> for low complexity regions by default.</p>
+            <div class="form-group">
+              <label>Filter<a href="docs/newoptions.html#filter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <div style="margin-left:15px;">
+                <div class="checkbox">
+                  <label><input type="checkbox" value="L" name="FILTER" checked> Low complexity</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="m" name="FILTER"> Mask for lookup table only</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Expect<a href="docs/newoptions.html#expect"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="EXPECT">
+                <option> 0.0001</option>
+                <option> 0.01</option>
+                <option> 1</option>
+                <option selected> 10</option>
+                <option> 100</option>
+                <option> 1000</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Matrix<a href="docs/matrix_info.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="MAT_PARAM">
+                <option value="PAM30	 9	 1"> PAM30 </option>
+                <option value="PAM70	 10	 1"> PAM70 </option>
+                <option value="BLOSUM80	 10	 1"> BLOSUM80 </option>
+                <option selected value="BLOSUM62	 11	 1"> BLOSUM62 </option>
+                <option value="BLOSUM45	 14	 2"> BLOSUM45 </option>
+              </select>
+              <input type="checkbox" name="UNGAPPED_ALIGNMENT" value="is_set"> Perform ungapped alignment
+            </div>
+            <div class="form-group">
+              <label>Query Genetic Codes (blastx only)<a href="docs/newoptions.html#gencodes"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="GENETIC_CODE">
+                <option> Standard (1)</option>
+                <option> Vertebrate Mitochondrial (2)</option>
+                <option> Yeast Mitochondrial (3)</option>
+                <option> Mold Mitochondrial; ... (4)</option>
+                <option> Invertebrate Mitochondrial (5)</option>
+                <option> Ciliate Nuclear; ... (6)</option>
+                <option> Echinoderm Mitochondrial (9)</option>
+                <option> Euplotid Nuclear (10)</option>
+                <option> Bacterial (11)</option>
+                <option> Alternative Yeast Nuclear (12)</option>
+                <option> Ascidian Mitochondrial (13)</option>
+                <option> Flatworm Mitochondrial (14)</option>
+                <option> Blepharisma Macronuclear (15)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Database Genetic Codes (tblast[nx] only)<a href="docs/newoptions.html#gencodes"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="DB_GENETIC_CODE">
+                <option> Standard (1)</option>
+                <option> Vertebrate Mitochondrial (2)</option>
+                <option> Yeast Mitochondrial (3)</option>
+                <option> Mold Mitochondrial; ... (4)</option>
+                <option> Invertebrate Mitochondrial (5)</option>
+                <option> Ciliate Nuclear; ... (6)</option>
+                <option> Echinoderm Mitochondrial (9)</option>
+                <option> Euplotid Nuclear (10)</option>
+                <option> Bacterial (11)</option>
+                <option> Alternative Yeast Nuclear (12)</option>
+                <option> Ascidian Mitochondrial (13)</option>
+                <option> Flatworm Mitochondrial (14)</option>
+                <option> Blepharisma Macronuclear (15)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Frame shift penalty for blastx<a href="docs/oof_notation.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="OOF_ALIGN">
+                <option> 6</option>
+                <option> 7</option>
+                <option> 8</option>
+                <option> 9</option>
+                <option> 10</option>
+                <option> 11</option>
+                <option> 12</option>
+                <option> 13</option>
+                <option> 14</option>
+                <option> 15</option>
+                <option> 16</option>
+                <option> 17</option>
+                <option> 18</option>
+                <option> 19</option>
+                <option> 20</option>
+                <option> 25</option>
+                <option> 30</option>
+                <option> 50</option>
+                <option> 1000</option>
+                <option selected VALUE = "0"> No OOF</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Limit search to results of Entrez query<a href="http://www.ncbi.nlm.nih.gov/entrez/query/static/help/helpdoc.html#Writing_Advanced_Search_Statements"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" name="ENTREZ_QUERY" maxlength="50">
+            </div>
+            <div class="form-group">
+              <label>Custom options <a href="docs/full_options.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" name="OTHER_ADVANCED" value="" maxlength="50">
+              <input type="checkbox" name="TAX_BLAST"> Show <a href ="docs/taxblasthelp.html">Tax Blast reports</a>
+            </div>
+          </div>
+          <div class="panel-footer"></div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#report"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Report settings</a>
+          </h4>
+        </div>
+        <div id="report" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="well well-sm text-info">
+              <i class="fa fa-info-circle" aria-hidden="true"></i> Use this section to configure the how results are reported.
+            </div>
+            <div class="form-group">
+              <label>Show<a href="docs/newoptions.html#ncbi-gi"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <div style="margin-left:15px;">
+                <div class="checkbox">
+                  <label><input type="checkbox" name="NCBI_GI" >NCBI-gi</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" name="OVERVIEW"  checked>Graphical Overview</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Alignment view <a href="docs/options.html#alignmentviews"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="ALIGNMENT_VIEW">
+                <option value=0> Pairwise</option>
+                <option value=1> master-slave with identities</option>
+                <option value=2> master-slave without identities</option>
+                <option value=3> flat master-slave with identities</option>
+                <option value=4> flat master-slave without identities</option>
+                <option value=7> BLAST XML</option>
+                <option value=8> Hit Table</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Descriptions <a href="docs/newoptions.html#descriptions"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="DESCRIPTIONS">
+                <option>0</option>
+                <option>10</option>
+                <option>50</option>
+                <option selected> 100</option>
+                <option> 250</option>
+                <option> 500</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Alignments <a href="docs/newoptions.html#alignments"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="ALIGNMENTS">
+                <option> 0</option>
+                <option> 10</option>
+                <option selected> 50</option>
+                <option> 100</option>
+                <option> 250</option>
+                <option> 500</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Color schema <a href="docs/color_schema.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="COLOR_SCHEMA">
+                <option selected value=0> No color schema</option>
+                <option value=1> Color schema 1</option>
+                <option value=2> Color schema 2</option>
+                <option value=3> Color schema 3</option>
+                <option value=4> Color schema 4</option>
+                <option value=5> Color schema 5</option>
+                <option value=6> Color schema 6</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <div>
+              <input class="btn btn-success" type="submit" value="Search">
+              <input class="btn btn-default" type="button" value="Clear sequence" onClick="MainBlastForm.SEQUENCE.value='';MainBlastForm.SEQFILE.value='';MainBlastForm.SEQUENCE.focus();">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

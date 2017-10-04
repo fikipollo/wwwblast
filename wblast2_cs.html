@@ -1,0 +1,161 @@
+<html>
+<head>
+  <title>NCBI BLAST Search</title>
+  <link type="text/css" rel="stylesheet" media="all" href="css/layout_blast.css">
+  <!--ONLINE REQUIREMENTS-->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet" type='text/css'>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script language="javascript">
+  function clear_sequence() {
+    document.bl2.seqfile1.value = ''
+    document.bl2.seqfile2.value = ''
+    document.bl2.sseq.value = ''
+    document.bl2.seq.value = ''
+    document.bl2.to.value = ''
+    document.bl2.tto.value = ''
+    document.bl2.from.value = ''
+    document.bl2.ffrom.value = ''
+    document.bl2.seq.focus()
+  }
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid" style=" max-width: 1024px; ">
+      <div class="navbar-header">
+        <a class="navbar-brand"  style="color: #126ed2;" href="#">NCBI Blast</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="docs/blast_help.html">Docs</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="main">
+    <h2>NCBI 2 Sequences Blast</h2>
+    <form action="wblast2_cs.cgi" method="post" name="bl2" enctype="multipart/form-data">
+      <div class="well well-sm text-info">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> This tool produces the alignment of two given sequences using BLAST engine for local alignment.
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a>Run BLAST</a>
+          </h4>
+        </div>
+        <div class="">
+          <div class="panel-body">
+            <div class="form-group">
+              <label>Program<a href="docs/blast_program.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="PROGRAM">
+                <option selected> blastn</option>
+                <option> blastp</option>
+                <option> tblastn</option>
+                <option> blastx</option>
+                <option> tblastx</option>
+              </select>
+            </div>
+            <h3 style="color: #4aa0ff;">Sequence 1</h3>
+            <div class="form-group">
+              <label>Enter accession or GI</label>
+              <input class="form-control" type="text" size=8 name="one">
+            </div>
+            <div class="form-group">
+              <label>or sequence in FASTA format:</label>
+              <textarea class="form-control" rows="6" name="seq"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Or load it from disk</label>
+              <input class="form-control"  style=" display: inline-block; " type="file" name="seqfile1">
+            </div>
+            <div class="form-group">
+              <b>Set subsequence: </b>From
+              <input type="text" name="from" value="" size="10"> to <input type="text" name="to" value="" size="10">
+            </div>
+
+          </hr>
+
+          <h3 style="color: #4aa0ff;">Sequence 2</h3>
+          <div class="form-group">
+            <label>Enter accession or GI</label>
+            <input class="form-control" type="text" size=8 name="two">
+          </div>
+          <div class="form-group">
+            <label>or sequence in FASTA format:</label>
+            <textarea class="form-control" rows="6" name="sseq"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Or load it from disk</label>
+            <input class="form-control"  style=" display: inline-block; " type="file" name="seqfile2">
+          </div>
+          <div class="form-group">
+            <b>Set subsequence: </b>From
+            <input type="text" name="ffrom" value="" size="10"> to <input type="text" name="tto" value="" size="10">
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div>
+            <input class="btn btn-lg btn-success" type="submit" value="Align">
+            <input class="btn btn-lg btn-default" type="button" value="Clear sequences" onClick="clear_sequence()">
+            <span>Or load it from disk</span>
+            <input style=" display: inline-block; " type="file" name="SEQFILE">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#advanced"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Advanced settings</a>
+        </h4>
+      </div>
+      <div id="advanced" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="well well-sm text-info">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> Use this section to customize the execution on BLAST.
+          </div>
+          <p>Parameters used in <a href=docs/full_options.html#blastn>BLASTN </a>program only:<p>
+
+            <div class="form-group">
+              <label>Reward for a match <a href="docs/full_options.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" size=8 name="match" value="1" >
+            </div>
+            <div class="form-group">
+              <label>Penalty for a mismatch <a href="docs/full_options.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" size=8 name="msmatch" value="-2" >
+            </div>
+            <div class="form-group">
+              <label>Open gap penalty </label>
+              <input class="form-control" type="text" size=4 name="gopen" value="5" >
+            </div>
+            <div class="form-group">
+              <label>Extension gap penalty </label>
+              <input class="form-control" type="text" size=4 name="gext" value="2" >
+            </div>
+            <div class="form-group">
+              <label>Gap x_dropoff </label>
+              <input class="form-control" type="text" size=4 name="dropoff" value="50" >
+            </div>
+            <div class="form-group">
+              <label>Expect value <a href="docs/newoptions.html#expect"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" size=4 name="expect" value="10" >
+            </div>
+            <div class="form-group">
+              <label>Word size <a href="docs/newoptions.html#expect"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" size=4 name="word" value="11" >
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="Filter" value="1" checked>
+              <label>Filter <a href="docs/newoptions.html#filter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+            </div>
+          </div>
+          <div class="panel-footer"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

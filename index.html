@@ -1,0 +1,93 @@
+<html>
+<head>
+  <title>NCBI BLAST Search</title>
+  <link type="text/css" rel="stylesheet" media="all" href="css/layout_blast.css">
+  <!--ONliNE REQUIREMENTS-->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+  <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet" type='text/css'>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid" style=" max-width: 1024px; ">
+      <div class="navbar-header">
+        <a class="navbar-brand"  style="color: #126ed2;" href="#">NCBI Blast</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="docs/blast_help.html">Docs</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class='main'>
+    <div class="well well-lg">
+      <h1>Basic Local Alignment Search Tool</h1>
+      <p>BLAST finds regions of similarity between biological sequences. The program compares nucleotide or protein	sequences to sequence databases and calculates the statistical significance.</p>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 index_box" >
+        <a href="blast_cs.html?program=blastn">
+          <h3 style=" padding-top: 45px; ">Nucleotide BLAST</h3>
+          <p>nucleotide <i class="fa fa-caret-right" aria-hidden="true"></i> nucleotide</p>
+        </a>
+      </div>
+      <div class="col-sm-4 index_box" style="border:none;">
+        <div class="index_subbox">
+          <a href="blast_cs.html?program=blastx">
+            <h3>blastx</h3>
+            <p>translated nucleotide <i class="fa fa-caret-right" aria-hidden="true"></i> protein</p>
+          </a>
+        </div>
+        <div class="index_subbox" style=" margin-top: 20px;" >
+          <a href="blast_cs.html?program=tblastn">
+            <h3>tblastn</h3>
+            <p>protein <i class="fa fa-caret-right" aria-hidden="true"></i> translated nucleotide</p>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-4 index_box">
+        <a href="blast_cs.html?program=blastp">
+          <h3 style=" padding-top: 45px; ">Protein BLAST</h3>
+          <p>protein <i class="fa fa-caret-right" aria-hidden="true"></i> protein</p>
+        </a>
+      </div>
+    </div>
+    <div style="margin-top:25px;" class="row">
+      <h3>Other tools</h3>
+      <div class="col-sm-3 " style="border:none;">
+        <div class="index_subbox">
+          <a href="blast_cs.html?program=tblastx">
+            <h4>tblastx</h4>
+            <p>TBLASTX search translated nucleotide databases using a translated nucleotide query.</p>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-3 " style="border:none;">
+        <div class="index_subbox">
+          <a href="psiblast_cs.html">
+            <h4>PSI/PHI BLAST</h4>
+            <p>Position-Specific Iterative Basic Local Alignment Search Tool.<br><br></p>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-3 " style="border:none;">
+        <div class="index_subbox">
+          <a href="rpsblast_cs.html">
+            <h4>RPS BLAST</h4>
+            <p>Reverse PSI-BLAST searches a query sequence against a database of profiles.</p>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-3 " style="border:none;">
+        <div class="index_subbox">
+          <a href="wblast2_cs.html">
+            <h4>BLAST 2 sequences</h4>
+            <p>Align two given sequences using BLAST.<br><br></p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

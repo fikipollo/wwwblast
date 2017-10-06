@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>NCBI BLAST Search</title>
+  <title>NCBI BLAST Search - eBioKit </title>
   <link type="text/css" rel="stylesheet" media="all" href="css/layout_blast.css">
   <!--ONLINE REQUIREMENTS-->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type='text/css'>
@@ -20,42 +20,38 @@
       </ul>
     </div>
   </nav>
-  <div class="main">
-    <h2>NCBI rpsBlast</h2>
-    <form action="blast_cs.cgi" method="post" name="MainBlastForm" enctype="multipart/form-data">
+  <div class='main'>
+    <h2>PSI BLAST</h2>
+    <form action="psiblast_cs.cgi" method="post" name="MainBlastForm" enctype="multipart/form-data">
       <div class="well well-sm text-info">
-        <i class="fa fa-info-circle" aria-hidden="true"></i> RPS-BLAST (Reverse PSI-BLAST) searches a query sequence against a database of profiles. This is the opposite of PSI-BLAST that searches a profile against a database of sequences, hence the 'Reverse'. RPS-BLAST uses a BLAST-like algorithm, finding single- or double-word hits and then performing an ungapped extension on these candidate matches.
+        <i class="fa fa-info-circle" aria-hidden="true"></i>
+        PSI-BLAST (Position-Specific Iterative Basic Local Alignment Search Tool) derives a position-specific scoring matrix (PSSM) or profile from the multiple sequence alignment of
+        sequences detected above a given score threshold using protein-protein BLAST.
+        This PSSM is used to further search the database for new matches, and is updated for subsequent iterations with these newly detected sequences.
+        Thus, PSI-BLAST provides a means of detecting distant relationships between proteins.
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a>Run BLAST</a>
+            <a>Run PSI BLAST</a>
           </h4>
         </div>
         <div class="">
           <div class="panel-body">
+            <input type="hidden" name="BLAST_TYPE" value="psiblast">
             <div class="form-group">
               <label>Program<a href="docs/blast_program.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="PROGRAM">
-                  <select class="form-control" name="PROGRAM">
-                    <option value="blastp">Protein vs. CDD</option>
-                    <option value="blastx">DNA vs. CDD</option>
-                    <option> blastp</option>
-                    <option> blastx</option>
-                    <option> tblastn</option>
-                    <option> tblastx</option>
-                  </select>
+                <option selected> blastp</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Database<a href="docs/blast_databases.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <label>Choose database to use with PSI/PHI Blast:<a href="docs/blast_databases.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="DATALIB">
-                  <option value='CDD/test_CDD_db'>test_CDD_db</option>
-
+                <option value="test_na_db">test_na_db</option>
+                <option value="test_aa_db">test_aa_db</option>
               </select>
             </div>
-            <input type="hidden" name="BLAST_TYPE" value="rpsblast">
-            <input type="hidden" name="RPSBLAST">
             <div class="form-group">
               <label>Input data is</label>
               <select class="form-control" name="input_TYPE">
@@ -91,9 +87,8 @@
             <div class="well well-sm text-info">
               <i class="fa fa-info-circle" aria-hidden="true"></i> Use this section to customize the execution on BLAST.
             </div>
-            <p>The query sequence is <a href="/BLAST/filtered.html">filtered</a> for low complexity regions by default.</p>
             <div class="form-group">
-              <label>Filter<a href="docs/newoptions.html#filter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <label>Filter <a href="docs/newoptions.html#filter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <div style="margin-left:15px;">
                 <div class="checkbox">
                   <label><input type="checkbox" value="L" name="FILTER" checked> Low complexity</label>
@@ -102,6 +97,23 @@
                   <label><input type="checkbox" value="m" name="FILTER"> Mask for lookup table only</label>
                 </div>
               </div>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="TWEAK_PARAMETERS" checked>
+              <label>Calculate composition-based statistics <a href="docs/composition.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="SMITH_WATERMAN">
+              <label>Compute Smith-Waterman alignments</label>
+            </div>
+            <div class="form-group">
+              <label>Expect value for inclusion in PSI-BLAST iteration 1 <a href="docs/newoptions.html#alignments"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" name="E_THRESH" value="0.002" maxlength="10">
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="PHI_BLAST">
+              <label>Pattern for use in PHI-BLAST search <a href="docs/pattern.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" name="PHI_PATTERN" size="35">
             </div>
 
             <div class="form-group">
@@ -115,6 +127,7 @@
                 <option> 1000</option>
               </select>
             </div>
+
             <div class="form-group">
               <label>Matrix<a href="docs/matrix_info.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="MAT_PARAM">
@@ -123,24 +136,6 @@
                 <option value="BLOSUM80	 10	 1"> BLOSUM80 </option>
                 <option selected value="BLOSUM62	 11	 1"> BLOSUM62 </option>
                 <option value="BLOSUM45	 14	 2"> BLOSUM45 </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Query Genetic Codes (blastx only)<a href="docs/newoptions.html#gencodes"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
-              <select class="form-control" name="GENETIC_CODE">
-                <option> Standard (1)</option>
-                <option> Vertebrate Mitochondrial (2)</option>
-                <option> Yeast Mitochondrial (3)</option>
-                <option> Mold Mitochondrial; ... (4)</option>
-                <option> Invertebrate Mitochondrial (5)</option>
-                <option> Ciliate Nuclear; ... (6)</option>
-                <option> Echinoderm Mitochondrial (9)</option>
-                <option> Euplotid Nuclear (10)</option>
-                <option> Bacterial (11)</option>
-                <option> Alternative Yeast Nuclear (12)</option>
-                <option> Ascidian Mitochondrial (13)</option>
-                <option> Flatworm Mitochondrial (14)</option>
-                <option> Blepharisma Macronuclear (15)</option>
               </select>
             </div>
             <div class="form-group">
@@ -167,10 +162,14 @@
               <label>Show<a href="docs/newoptions.html#ncbi-gi"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <div style="margin-left:15px;">
                 <div class="checkbox">
+                  <label><input type="checkbox" name="NCBI_GI" >NCBI-gi</label>
+                </div>
+                <div class="checkbox">
                   <label><input type="checkbox" name="OVERVIEW"  checked>Graphical Overview</label>
                 </div>
               </div>
             </div>
+
             <div class="form-group">
               <label>Alignment view <a href="docs/options.html#alignmentviews"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="ALIGNMENT_VIEW">
@@ -189,9 +188,9 @@
                 <option>0</option>
                 <option>10</option>
                 <option>50</option>
-                <option selected> 100</option>
+                <option> 100</option>
                 <option> 250</option>
-                <option> 500</option>
+                <option selected> 500</option>
               </select>
             </div>
             <div class="form-group">
@@ -199,10 +198,10 @@
               <select class="form-control" name="ALIGNMENTS">
                 <option> 0</option>
                 <option> 10</option>
-                <option selected> 50</option>
+                <option> 50</option>
                 <option> 100</option>
                 <option> 250</option>
-                <option> 500</option>
+                <option selected> 500</option>
               </select>
             </div>
             <div class="form-group">

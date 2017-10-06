@@ -59,14 +59,17 @@
             <div class="form-group">
               <label>Program<a href="docs/blast_program.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="PROGRAM" id="program">
-                $${DATABASES}
+                <option selected=""> blastn</option>
+                <option> blastp</option>
+                <option> blastx</option>
+                <option> tblastn</option>
+                <option> tblastx</option>
               </select>
             </div>
             <div class="form-group">
               <label>Database<a href="docs/blast_databases.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="DATALIB">
-                <option value="test_na_db">test_na_db</option>
-                <option value="test_aa_db">test_aa_db</option>
+                  $${DATABASES}
               </select>
             </div>
             <div class="form-group">

@@ -7,6 +7,28 @@
   <link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet" type='text/css'>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+  var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+    sURLVariables = sPageURL.split('&'),
+    sParameterName,
+    i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : sParameterName[1];
+      }
+    }
+  };
+
+  $("document").ready(function(){
+    //say you have got 555 from the JSP as selcted value
+    var program = getUrlParameter('program');
+    $("#program").val(program).attr("selected","selected")
+  });
+  </script>
 </head>
 <body>
   <nav class="navbar navbar-default">
@@ -21,10 +43,10 @@
     </div>
   </nav>
   <div class="main">
-    <h2>NCBI rpsBlast</h2>
+    <h2>Standard Nucleotide BLAST</h2>
     <form action="blast_cs.cgi" method="post" name="MainBlastForm" enctype="multipart/form-data">
       <div class="well well-sm text-info">
-        <i class="fa fa-info-circle" aria-hidden="true"></i> RPS-BLAST (Reverse PSI-BLAST) searches a query sequence against a database of profiles. This is the opposite of PSI-BLAST that searches a profile against a database of sequences, hence the 'Reverse'. RPS-BLAST uses a BLAST-like algorithm, finding single- or double-word hits and then performing an ungapped extension on these candidate matches.
+        <i class="fa fa-info-circle" aria-hidden="true"></i> The Basic Local Alignment Search Tool (BLAST) finds regions of local similarity between protein or nucleotide sequences. The program compares nucleotide or protein sequences to sequence in a database and calculates the statistical significance of the matches.
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -36,26 +58,21 @@
           <div class="panel-body">
             <div class="form-group">
               <label>Program<a href="docs/blast_program.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
-              <select class="form-control" name="PROGRAM">
-                  <select class="form-control" name="PROGRAM">
-                    <option value="blastp">Protein vs. CDD</option>
-                    <option value="blastx">DNA vs. CDD</option>
-                    <option> blastp</option>
-                    <option> blastx</option>
-                    <option> tblastn</option>
-                    <option> tblastx</option>
-                  </select>
+              <select class="form-control" name="PROGRAM" id="program">
+                <option selected=""> blastn</option>
+                <option> blastp</option>
+                <option> blastx</option>
+                <option> tblastn</option>
+                <option> tblastx</option>
               </select>
             </div>
             <div class="form-group">
               <label>Database<a href="docs/blast_databases.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="DATALIB">
-                  <option value='CDD/test_CDD_db'>test_CDD_db</option>
-
+                <option value="test_na_db">test_na_db</option>
+                <option value="test_aa_db">test_aa_db</option>
               </select>
             </div>
-            <input type="hidden" name="BLAST_TYPE" value="rpsblast">
-            <input type="hidden" name="RPSBLAST">
             <div class="form-group">
               <label>Input data is</label>
               <select class="form-control" name="input_TYPE">
@@ -68,6 +85,10 @@
               <textarea class="form-control" rows="6" name="SEQUENCE"></textarea>
             </div>
             <p>Please read about <a href="/BLAST/fasta.html">FASTA</a> format description</p>
+            <div class="form-group">
+              <b>Set subsequence: </b>From
+              <input type="text" name="QUERY_FROM" value="" size="10"> to <input type="text" name="QUERY_TO" value="" size="10">
+            </div>
           </div>
           <div class="panel-footer">
             <div>
@@ -103,7 +124,6 @@
                 </div>
               </div>
             </div>
-
             <div class="form-group">
               <label>Expect<a href="docs/newoptions.html#expect"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="EXPECT">
@@ -124,6 +144,7 @@
                 <option selected value="BLOSUM62	 11	 1"> BLOSUM62 </option>
                 <option value="BLOSUM45	 14	 2"> BLOSUM45 </option>
               </select>
+              <input type="checkbox" name="UNGAPPED_ALIGNMENT" value="is_set"> Perform ungapped alignment
             </div>
             <div class="form-group">
               <label>Query Genetic Codes (blastx only)<a href="docs/newoptions.html#gencodes"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
@@ -144,14 +165,61 @@
               </select>
             </div>
             <div class="form-group">
+              <label>Database Genetic Codes (tblast[nx] only)<a href="docs/newoptions.html#gencodes"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="DB_GENETIC_CODE">
+                <option> Standard (1)</option>
+                <option> Vertebrate Mitochondrial (2)</option>
+                <option> Yeast Mitochondrial (3)</option>
+                <option> Mold Mitochondrial; ... (4)</option>
+                <option> Invertebrate Mitochondrial (5)</option>
+                <option> Ciliate Nuclear; ... (6)</option>
+                <option> Echinoderm Mitochondrial (9)</option>
+                <option> Euplotid Nuclear (10)</option>
+                <option> Bacterial (11)</option>
+                <option> Alternative Yeast Nuclear (12)</option>
+                <option> Ascidian Mitochondrial (13)</option>
+                <option> Flatworm Mitochondrial (14)</option>
+                <option> Blepharisma Macronuclear (15)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Frame shift penalty for blastx<a href="docs/oof_notation.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <select class="form-control" name="OOF_ALIGN">
+                <option> 6</option>
+                <option> 7</option>
+                <option> 8</option>
+                <option> 9</option>
+                <option> 10</option>
+                <option> 11</option>
+                <option> 12</option>
+                <option> 13</option>
+                <option> 14</option>
+                <option> 15</option>
+                <option> 16</option>
+                <option> 17</option>
+                <option> 18</option>
+                <option> 19</option>
+                <option> 20</option>
+                <option> 25</option>
+                <option> 30</option>
+                <option> 50</option>
+                <option> 1000</option>
+                <option selected VALUE = "0"> No OOF</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Limit search to results of Entrez query<a href="http://www.ncbi.nlm.nih.gov/entrez/query/static/help/helpdoc.html#Writing_Advanced_Search_Statements"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+              <input class="form-control" type="text" name="ENTREZ_QUERY" maxlength="50">
+            </div>
+            <div class="form-group">
               <label>Custom options <a href="docs/full_options.html"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <input class="form-control" type="text" name="OTHER_ADVANCED" value="" maxlength="50">
+              <input type="checkbox" name="TAX_BLAST"> Show <a href ="docs/taxblasthelp.html">Tax Blast reports</a>
             </div>
           </div>
           <div class="panel-footer"></div>
         </div>
       </div>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -167,6 +235,9 @@
               <label>Show<a href="docs/newoptions.html#ncbi-gi"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <div style="margin-left:15px;">
                 <div class="checkbox">
+                  <label><input type="checkbox" name="NCBI_GI" >NCBI-gi</label>
+                </div>
+                <div class="checkbox">
                   <label><input type="checkbox" name="OVERVIEW"  checked>Graphical Overview</label>
                 </div>
               </div>
@@ -175,12 +246,12 @@
               <label>Alignment view <a href="docs/options.html#alignmentviews"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
               <select class="form-control" name="ALIGNMENT_VIEW">
                 <option value=0> Pairwise</option>
-                <option value=1> query-anchored with identities</option>
-                <option value=2> query-anchored without identities</option>
-                <option value=3> flat query-anchored with identities</option>
-                <option value=4> flat query-anchored without identities</option>
+                <option value=1> master-slave with identities</option>
+                <option value=2> master-slave without identities</option>
+                <option value=3> flat master-slave with identities</option>
+                <option value=4> flat master-slave without identities</option>
                 <option value=7> BLAST XML</option>
-                <option value=9> Hit Table</option>
+                <option value=8> Hit Table</option>
               </select>
             </div>
             <div class="form-group">

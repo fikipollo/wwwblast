@@ -14,7 +14,7 @@ def print_help():
     exit()
 
 def parse_params(params, args):
-    for i in args:
+    for i in range(0, len(args)):
         if args[i] == "-d":
             try:
                 params["databases"] = args[i+1]

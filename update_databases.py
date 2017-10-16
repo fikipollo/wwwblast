@@ -85,10 +85,11 @@ def read_databases(params):
             params["protein_dbs"].append(filename)
         elif file_extension == ".nsq":
             params["nucleotides_dbs"].append(filename)
-    for filename in os.listdir(params["databases"] + "/CDD/"):
-        filename, file_extension = os.path.splitext(filename)
-        if file_extension == ".psq":
-            params["cdd_dbs"].append("CDD/" + filename)
+    if os.path.isdir(params["databases"] + "/CDD/"):
+        for filename in os.listdir(params["databases"] + "/CDD/"):
+            filename, file_extension = os.path.splitext(filename)
+            if file_extension == ".psq":
+                params["cdd_dbs"].append("CDD/" + filename)
 
 def update_files(params):
     content = ""
